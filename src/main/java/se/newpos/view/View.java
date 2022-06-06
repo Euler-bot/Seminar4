@@ -37,9 +37,6 @@ public class View {
         System.out.println(currentItemToDisplay.getCurrentItemName() + " has been added to sale");
         currentItemToDisplay = controller.addCurrentItemByAmount(currentItemToDisplay, 4);
         System.out.println("Added 4 more of " + currentItemToDisplay.getCurrentItemName()   +" to sale\n");
-        if(currentItemToDisplay == null){
-            System.out.println("Item not found try again");
-        }
         runningTotal = controller.endSales();
         System.out.println("RunningTotal:");
         runningTotal.printRunningTotal();
@@ -60,9 +57,6 @@ public class View {
         System.out.println(currentItemToDisplay.getCurrentItemName() + " has been added to sale");
         currentItemToDisplay = controller.addCurrentItemByAmount(currentItemToDisplay, 4);
         System.out.println("Added 4 more of " + currentItemToDisplay.getCurrentItemName()   +" to sale\n");
-        if(currentItemToDisplay == null){
-            System.out.println("Item not found try again");
-        }
         System.out.println("RunningTotal:");
         controller.endSale();
         controller.addDiscount("198610070199");
