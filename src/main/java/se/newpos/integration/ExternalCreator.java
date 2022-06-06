@@ -20,21 +20,38 @@ public class ExternalCreator {
         inventorySystem = new InventorySystem();
 
     }
+    /**
+     * Getter for accountSystem
+     * @return accountsystem
+     */
     public AccountSystem getAccountSystem() {
         return accountSystem;
     }
-
+    /**
+     * getter for discountRegistry that hold all information of discounts
+     * @return discountregistry
+     */
     public DiscountRegistry getDiscountRegistry() {
         return discountRegistry;
     }
-
+    /**
+     * Getter for transactionRegistry 
+     * @return transactionRegistry
+     */
     public TransactionRegistry getTransactionRegistry() {
         return transactionRegistry;
     }
-
+    /**
+     * Getter for inventorySystem
+     * @return the inventorysystem created
+     */
     public InventorySystem getInventorySystem() {
         return inventorySystem;
     }
+    /**
+     * Updates all external systems
+     * @param transactionDTO contains all information needed to update
+     */
     public void updateAllSystems(TransactionDTO transactionDTO){
         accountSystem.emailTransactions(transactionDTO);
         inventorySystem.updateStorage(transactionDTO);

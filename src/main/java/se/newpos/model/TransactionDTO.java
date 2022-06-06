@@ -17,15 +17,31 @@ public final class TransactionDTO {
         this.currentRegister = transaction.getCurrentRegister();
         this.orderNumber = Transaction.getOrderNumber();
     }
+    /**
+     * Getter for sale from this DTO
+     * @return Sale
+     */
     public Sale getCurrentSale() {
         return currentSale;
     }
+    /**
+     * Getter for payment
+     * @return payment
+     */
     public Payment getPayment() {
         return payment;
     }
+    /**
+     * Getter for register
+     * @return CashRegister
+     */
     public CashRegister getCurrentRegister() {
         return currentRegister;
     }
+    /**
+     * Getter for this ordernumber
+     * @return an int
+     */
     public int getOrderNumber() {
         return orderNumber;
     }

@@ -28,30 +28,35 @@ public final class ItemDTO {
         this.vatRate = item.getVatRate();
     }
     /**
+     * getter for itemID
      * @return int return the itemID
      */
     public int getItemID() {
         return itemID;
     }
     /**
+     * Getter for item name
      * @return String return the name
      */
     public String getName() {
         return name;
     }
     /**
+     * Getter for description
      * @return String return the itemDescription
      */
     public String getItemDescription() {
         return itemDescription;
     }
     /**
+     *Getter for price 
      * @return double return the price
      */
     public double getPrice() {
         return price;
     }
     /**
+     * getter for vatrate
      * @return double return the vatRate
      */
     public double getVatRate() {

@@ -27,15 +27,31 @@ public class Transaction {
     private void setEndTimeOfSale(){
         this.currentSale.getSaleTimePeriod().setEndTimeOfSale();
     }
+    /**
+     * Getgter for sale
+     * @return Sale
+     */
     public Sale getCurrentSale() {
         return currentSale;
     }
+    /**
+     * Getter for payment
+     * @return Payment
+     */
     public Payment getPayment() {
         return payment;
     }
+    /**
+     * Getter for CashRegister
+     * @return CashRegister
+     */
     public CashRegister getCurrentRegister() {
         return currentRegister;
     }
+    /**
+     * Getter for ordernumber
+     * @return an int
+     */
     public static int getOrderNumber() {
         return orderNumber;
     }

@@ -7,7 +7,7 @@ import se.newpos.model.Item;
 import se.newpos.model.ItemDTO;
 import se.newpos.model.TransactionDTO;
 /**
- * 
+ * This is the inventorySystem that has the stores inventoryRegister.
  */
 public class InventorySystem {
     List<Item> items = new ArrayList<>();
@@ -47,7 +47,7 @@ public class InventorySystem {
                      
     }
     /**
-     * 
+     * Getter
      * @return a list of ItemDTO from inventory
      */
     public ArrayList<ItemDTO> getItems(){
@@ -58,8 +58,8 @@ public class InventorySystem {
         return getItems;
     }
     /**
-     * Updates inventoryamounts of items.
-     * @param transactionDTO
+     * Updates inventoryamounts of the sold items from gathered from transactionDTO
+     * @param transactionDTO is the hoilder of the sold items to update the inventory
      */
     public void updateStorage(TransactionDTO transactionDTO){
         int i = 0;

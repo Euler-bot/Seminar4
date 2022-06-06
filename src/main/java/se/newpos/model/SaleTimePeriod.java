@@ -18,20 +18,24 @@ public class SaleTimePeriod {
     public SaleTimePeriod(){
         this.startSaleTime = LocalTime.now().format(dFormatter);
     }
+    /**
+     * Setter for entSaleTime
+     */
     public void setEndTimeOfSale(){
         this.endSaleTime = LocalTime.now().format(dFormatter);
     }
+    /**
+     * Getter for startSaletime
+     * @return a string with startsaletime
+     */
     public String getStartSaleTime() {
         return startSaleTime;
     }
-    public void setStartSaleTime(String startSaleTime) {
-        this.startSaleTime = startSaleTime;
-    }
+    /**
+     * Getter for endSaleTime
+     * @return a String
+     */
     public String getEndSaleTime() {
         return endSaleTime;
     }
-    public void setEndSaleTime(String endSaleTime) {
-        this.endSaleTime = endSaleTime;
-    }
-     
 }

@@ -31,7 +31,7 @@ public class DiscountRegistry {
     /**
      * Checks to se if Customer has an eligeble discount.
      * @param socialNumber The entered socialnumber from cashier.
-     * @return
+     * @return true when found and false when not found
      */
     public boolean hasDiscount(String socialNumber){
         for(Discount discount : discounts){
@@ -41,7 +41,6 @@ public class DiscountRegistry {
         }
         return false;
     }
-
     /**
      * Collects all valid discounts for this customer that matches.
      * @param socialNumber This is used for verifie that customer has valid discount.
@@ -63,6 +62,10 @@ public class DiscountRegistry {
     public void updateCustomerDiscount(TransactionDTO transactionDTO){
       // Add code here when a real DB is used.
     }
+    /**
+     * getter for a discount from list with index
+     * @return the choosen discount
+     */
     public Discount getDiscount (int index){
         return discounts.get(index);
     }

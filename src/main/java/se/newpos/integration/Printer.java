@@ -7,9 +7,10 @@ import se.newpos.model.Reciept;
  */
 public class Printer {
 
-    public Printer(){
-
-    }
+    /**
+     * Prints out the reciept to screen.
+     * @param reciept contains all information and creates a string to be printed.
+     */
     public void printReciept(Reciept reciept){
         System.out.println(reciept.createRecieptString());
         

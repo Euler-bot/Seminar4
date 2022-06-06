@@ -58,6 +58,7 @@ public class Item {
         this.quantity -= amount;
     }
     /**
+     * getter for itemID
      * @return int return the itemID
      */
     public int getItemID() {
@@ -65,6 +66,7 @@ public class Item {
     }
 
     /**
+     * Setter for ITemID
      * @param itemID the itemID to set
      */
     public void setItemID(int itemID) {
@@ -72,6 +74,7 @@ public class Item {
     }
 
     /**
+     * Getter for item name
      * @return String return the name
      */
     public String getName() {
@@ -79,6 +82,7 @@ public class Item {
     }
 
     /**
+     * setter for item name
      * @param name the name to set
      */
     public void setName(String name) {
@@ -86,6 +90,7 @@ public class Item {
     }
 
     /**
+     * getter for item description
      * @return String return the itemDescription
      */
     public String getItemDescription() {
@@ -93,6 +98,7 @@ public class Item {
     }
 
     /**
+     * setter for itemdesctrion
      * @param itemDescription the itemDescription to set
      */
     public void setItemDescription(String itemDescription) {
@@ -100,6 +106,7 @@ public class Item {
     }
 
     /**
+     * getter for price
      * @return double return the price
      */
     public double getPrice() {
@@ -107,6 +114,7 @@ public class Item {
     }
 
     /**
+     * Setter
      * @param price the price to set
      */
     public void setPrice(double price) {
@@ -114,6 +122,7 @@ public class Item {
     }
 
     /**
+     * Getter
      * @return double return the vatRate
      */
     public double getVatRate() {
@@ -121,6 +130,7 @@ public class Item {
     }
 
     /**
+     * Setter
      * @param vatRate the vatRate to set
      */
     public void setVatRate(double vatRate) {
@@ -128,12 +138,14 @@ public class Item {
     }
 
     /**
+     * getter
      * @return int return the quantity
      */
     public int getQuantity() {
         return quantity;
     }
-        /**
+    /**
+     * Setter
      * @param qyantity the quantity to set
      */
     public void setQuantity(int quantity) {
@@ -142,6 +154,7 @@ public class Item {
 
 
     /**
+     * Increases qyantity by amount
      * @param amount quantity increases by a choosen amount. Ex if the current quantity is 2 and you vant the total to
      * be 5 then you should enter 3 as amount
      */

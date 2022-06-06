@@ -81,7 +81,7 @@ public class Sale {
     }
     /**
      * Updates runningTotal in current sale with a choosen amount of items.
-     * @param currentItem
+     * @param currentItem is the item to be added to runningtotal
      * @param amount From this price and vat are extracted from.
      */
     private void updateRunningTotalWithNumberOfItems(ItemDTO currentItem, int amount){
@@ -102,16 +102,16 @@ public class Sale {
     }
     /**
      * Method for calculating Vat for an item
-     * @param currentItem
-     * @return
+     * @param currentItem wich price to be calculated
+     * @return a bouble with the sum of vat for this item
      */
     private double calculateVat(ItemDTO currentItem){
         return (currentItem.getPrice() * currentItem.getVatRate());
     }
     /**
      * Method for calculating totalPrice with vat for an item
-     * @param currentItem
-     * @return
+     * @param currentItem wich price to be calculated
+     * @return a double with totalprice for an item
      */
     private double calculateTotalPrice(ItemDTO currentItem){
         return currentItem.getPrice() * (1 + currentItem.getVatRate());
@@ -130,12 +130,13 @@ public class Sale {
         return false;
     }
     /**
+     * getter for saletimeperiod
      * @return SaleTimePeriod return the saleTimePeriod
      */
     public SaleTimePeriod getSaleTimePeriod() {
         return saleTimePeriod;
     }
-    /**
+    /**Getter for runningtotal
      * @return RunningTotal return the runningTotal
      */
     public RunningTotal getRunningTotal() {
@@ -143,6 +144,7 @@ public class Sale {
     }
     
     /**
+     * Getter for all items in sale
      * @return List<Item> return the items
      */
     public ArrayList<Item> getItems() {
@@ -153,7 +155,8 @@ public class Sale {
         return cloneItems;
     }
     /**
-     * this is called from controller to add discount to sale and updates discount ant runningtotal sums.
+     * this is called from controller to add discount to sale and updates discount and runningtotal sums.
+     * Adding all eligeble discount in a list in totalDiscount
      * @param discount This is all of the eligeble discount for the specified customer.
      */
     public void addDiscountForItemsInSale(DiscountInfo discount){
@@ -194,7 +197,6 @@ public class Sale {
     public double getDiscountAmount(){
         return totalDiscounts.getTotalDiscount();
     }
-
     private void updateRunningTotalWithDiscount(DiscountInfo discountInfo){
         double vatRate = this.runningTotal.getTotalVat()/ this.runningTotal.getTotalNetPrice();
         double totalNetPrice = this.runningTotal.getTotalNetPrice() - discountInfo.getTotalDiscount();
@@ -214,7 +216,7 @@ public class Sale {
     }
     /**
      * Getter method for discountinformation.
-     * @return
+     * @return DiscountInfo from this sale
      */
     public DiscountInfo getDiscountInfo(){
         return totalDiscounts;
@@ -223,7 +225,7 @@ public class Sale {
      * Method to create an transactionDTO and print the recipt of this sale.
      * @param printer the printer where the reciept will print on. 
      * @param cashRegister Current Register opererated on.
-     * @return
+     * @return a TransactionDTO
      */
     public TransactionDTO printReciept(Printer printer, CashRegister cashRegister){
         TransactionDTO transactionDTO;

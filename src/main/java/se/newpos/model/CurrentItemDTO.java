@@ -24,24 +24,53 @@ public final class CurrentItemDTO {
         this.runningTotalPrice = runningTotal.getTotalPrice();
         this.runningVat = runningTotal.getTotalVat();
     }
+    /**
+     * Getter for ItemID
+     * @return id
+     */
     public int getCurrentItemID() {
         return currentItemID;
     }
+    /**
+     * Getter for name
+     * @return name
+     */
     public String getCurrentItemName() {
         return currentItemName;
     }
+    /**
+     * Getter for description
+     * @return description
+     */
     public String getCurrentItemDescription() {
         return currentItemDescription;
     }
+    /**
+     * Getter for price
+     * @return price
+     */
     public double getCurrentItemPrice() {
         return currentItemPrice;
     }
+    /**
+     * Getter for qyantity
+     * @return qyantity
+     */
     public int getCurrentItemQuantity() {
         return currentItemQuantity;
     }
+    /**
+     * Getter for price
+     * @return price
+     */
     public double getRunningTotalPrice() {
         return runningTotalPrice;
     }
+    /**
+     * Getter for vat
+     * 
+     * @return vat
+     */
     public double getRunningVat() {
         return runningVat;
     }

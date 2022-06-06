@@ -134,7 +134,7 @@ public class Controller {
     }
     /**
      * Getter for sale.
-     * @return 
+     * @return sale
      */
     public Sale getSale(){
         return sale;

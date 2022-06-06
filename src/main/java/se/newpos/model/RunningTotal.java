@@ -37,13 +37,22 @@ public class RunningTotal {
     public void addTotalNetPrice(double amount){
         this.totalNetPrice += amount;
     }
+    /**
+     * Increasing number of items with amount
+     * @param amount how many to increase with
+     */
     public void addNumberOfItems(int amount){
         this.totalNumberOfItems += amount;
     }
+    /**
+     * Getter for number of items
+     * @return numberofitems
+     */
     public int getTotalNumberOfItems(){
         return totalNumberOfItems;
     }
     /**
+     * getter
      * @return double return the totalNetPrice
      */
     public double getTotalNetPrice() {
@@ -51,6 +60,7 @@ public class RunningTotal {
     }
 
     /**
+     * setter for totalnetprice
      * @param totalNetPrice the totalNetPrice to set
      */
     public void setTotalNetPrice(double totalNetPrice) {
@@ -58,6 +68,7 @@ public class RunningTotal {
     }
 
     /**
+     * getter for vat
      * @return double return the totalVat
      */
     public double getTotalVat() {
@@ -65,12 +76,14 @@ public class RunningTotal {
     }
 
     /**
+     * setter for vat
      * @param totalVat the totalVat to set
      */
     public void setTotalVat(double totalVat) {
         this.totalVat = totalVat;
     }
     /**
+     * getter for totalprice
      * @return double return the runningTotal
      */
     public double getTotalPrice() {
@@ -78,6 +91,7 @@ public class RunningTotal {
     }
 
     /**
+     * setter for totalprice
      * @param totalPrice the totalPrice to set
      */
     public void setTotalPrice(double totalPrice) {

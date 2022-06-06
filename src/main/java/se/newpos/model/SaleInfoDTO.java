@@ -17,7 +17,10 @@ public final class SaleInfoDTO {
         this.items = currentsale.getItems();
         this.discount = currentsale.getDiscountAmount();
     }
-
+    /**
+     * getter for runningtotal
+     * @return RunningTotal
+     */
     public RunningTotal getRunningTotal() {
         return runningTotal;
     }
@@ -30,6 +33,10 @@ public final class SaleInfoDTO {
         System.out.format("Total discount: %.2f%n", this.discount);
         System.out.println("Total items: " + this.runningTotal.getTotalNumberOfItems() + "\n");
     }
+    /**
+     * Getter for discount in sale
+     * @return a double
+     */
     public double getDiscount(){
         return discount;
     }
