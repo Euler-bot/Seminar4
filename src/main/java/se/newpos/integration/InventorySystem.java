@@ -19,14 +19,19 @@ public class InventorySystem {
      * This function searches in the inventorysystem after the entered item.
      * @param enteredItem This is the entered item with a identifier to be matched.
      * @return a complete ItemDTO to controller so it can add it to sale.
+     * @throws ItemNotFoundException when an item is not found in the inventory.
      */
-    public ItemDTO findItemWithIDIdentifier (ItemDTO enteredItem){
+    public ItemDTO findItemWithIDIdentifier (ItemDTO enteredItem)throws ItemNotFoundException, ServerDownException{
+        if(enteredItem.getItemID() == 0){
+            throw new ServerDownException("Check connection to server!");
+        }
+
         for (Item item : items){
             if (item.getItemID() == enteredItem.getItemID()){
                 return new ItemDTO(item);
             }
         }
-        return null;
+        throw new ItemNotFoundException("An item with this ID was not found in inventory. Searched ID was:  " + enteredItem.getItemID());
     } 
     /**
      * Hardcoded items for testing of system

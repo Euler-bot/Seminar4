@@ -37,13 +37,13 @@ public class Discount {
      */
     private void addCustomers(double discountRate){
         if(discountRate == 0.10){
-            customers.add(new Customer("198610070198", "Robert Furuvald"));
+            customers.add(new Customer("199610180192", "Robert Tomson"));
             customers.add(new Customer("198510091022", "Anders Andersson"));
             customers.add(new Customer("200101251506", "Johan Person"));
             customers.add(new Customer("199812250989", "Anna Johansson"));
         }
         if(discountRate == 0.20){
-            customers.add(new Customer("198610070198", "Robert Furuvald"));
+            customers.add(new Customer("199610180192", "Robert Tomson"));
             customers.add(new Customer("198805311229", "Alma Pettersson"));
             customers.add(new Customer("199901251906", "Mike Litoris"));
             customers.add(new Customer("199812250989", "Anna Johansson"));

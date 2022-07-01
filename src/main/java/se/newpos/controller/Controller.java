@@ -60,19 +60,21 @@ public class Controller {
     /**
      * Adds the enteredItemDTO to sale if it exist in db othervise it does not do anything.
      * @param enteredItemDTO This is the entered item with a identifier ex scanning a bar code.
-     * @return the entered item exist in database then it will return this item to display this. View has to extract runningTotal from
-     * controllers currentsale. 
+     * @return CurrentItemDTO the entered item exist in database then it will return this item to display this. View has to extract runningTotal from
+     * controllers currentsale.
+     * @throws ItemNotFoundException When scanned item not found in inventory system 
      */
-    public CurrentItemDTO enterItem(final ItemDTO enteredItemDTO){
+    public CurrentItemDTO enterItem(final ItemDTO enteredItemDTO) throws ItemNotFoundException, ServerDownException{
         if(sale.inSale(enteredItemDTO)){
             return sale.addDuplicate(enteredItemDTO);
         }
-        ItemDTO foundItem;
-        foundItem = inventorySystem.findItemWithIDIdentifier(enteredItemDTO);
-        if(foundItem != null){
+        try {
+            ItemDTO foundItem = inventorySystem.findItemWithIDIdentifier(enteredItemDTO);
             return sale.addEnteredItem(foundItem);
+        } catch (ItemNotFoundException | ServerDownException exception) {
+            System.out.println("[For Programmer]: " + exception.getMessage());
+            throw exception;
         }
-        return null;
     }
     /**
      * Adds a choosen number of the last identified item to sale. 
