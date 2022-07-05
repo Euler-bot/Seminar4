@@ -6,11 +6,15 @@ import java.io.PrintWriter;
 
 import se.newpos.model.RunningTotal;
 import se.newpos.model.SaleObserver;
-
+/**
+ * This class writes total income from all sales since the program was started
+ */
 class TotalRevenueFileOutput implements SaleObserver {
 	private PrintWriter logger;
     private double totalRevenueSum;
-
+    /**
+     * Generates a new instance of this class
+     */
     TotalRevenueFileOutput(){
         totalRevenueSum = 0;
         try {

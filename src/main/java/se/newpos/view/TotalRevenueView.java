@@ -4,11 +4,15 @@ import se.newpos.model.RunningTotal;
 import se.newpos.model.SaleObserver;
 
 
-
+/**
+ * This class prints out in terminal total income from all sales since the program was started
+ */
 
 class TotalRevenueView implements SaleObserver {
     private double totalSaleAmount;
-
+    /**
+     * Generates a new instance of this class
+     */
     public TotalRevenueView(){
        this.totalSaleAmount = 0;
     }
