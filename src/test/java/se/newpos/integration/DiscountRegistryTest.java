@@ -35,7 +35,7 @@ public class DiscountRegistryTest {
 
 	@Test
 	public void shouldHasDiscount() {
-		String socialNumber = "198610070198";
+		String socialNumber = "199610180192";
 		ItemDTO item = new ItemDTO(new Item(1267, "Basturöktskinka", "Basturökt 200g",
 													25.00, 0.12, 50));
 		double discountRate = 0.10;
@@ -46,7 +46,7 @@ public class DiscountRegistryTest {
 	}
 	@Test
 	public void shouldNotHaveDiscount() {
-		String socialNumber = "198610070198";
+		String socialNumber = "199610180192";
 		ItemDTO item = new ItemDTO(new Item(1267, "Basturöktskinka", "Basturökt 200g",
 													25.00, 0.12, 50));
 		double discountRate = 0.32;
@@ -61,7 +61,7 @@ public class DiscountRegistryTest {
 													25.00, 0.12, 50));
 		double discountRate = 0.10;
 		discountRegistry.addDiscount(item, discountRate);
-		String socialNumber = "198610070198";
+		String socialNumber = "199610180192";
 
 		DiscountInfo actualValue = discountRegistry.convertToInfo(socialNumber);
 		String actual = actualValue.getDiscount().get(0).getItemsWithDiscount().getName();
@@ -74,7 +74,7 @@ public class DiscountRegistryTest {
 													25.00, 0.12, 50));
 		double discountRate = 0.10;
 		discountRegistry.addDiscount(item, discountRate);
-		String socialNumber = "198610070195";
+		String socialNumber = "198910070195";
 		DiscountInfo actualValue = discountRegistry.convertToInfo(socialNumber);
 		assertEquals(0, actualValue.getDiscount().size(), "Expected the list to be empty.");
 	}

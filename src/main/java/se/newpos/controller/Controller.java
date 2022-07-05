@@ -1,6 +1,7 @@
 package se.newpos.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import se.newpos.integration.*;
 import se.newpos.model.*;
@@ -18,6 +19,7 @@ public class Controller {
     private CashRegister cashRegister;
     private Sale sale;
     private ExternalCreator creator;
+    private List<SaleObserver> saleObservers = new ArrayList<>();
     /**
      * Creates a new instance.
      * HardCoded discounts in the last methodcall.
@@ -63,6 +65,7 @@ public class Controller {
      * @return CurrentItemDTO the entered item exist in database then it will return this item to display this. View has to extract runningTotal from
      * controllers currentsale.
      * @throws ItemNotFoundException When scanned item not found in inventory system 
+     * @throws ServerDownException When server is not connected.
      */
     public CurrentItemDTO enterItem(final ItemDTO enteredItemDTO) throws ItemNotFoundException, ServerDownException{
         if(sale.inSale(enteredItemDTO)){
@@ -108,23 +111,27 @@ public class Controller {
         else{
             System.out.println("No discount found, try another socialnumber.");
         }
-       
     }
     /**
      * This method is the payment secvence.
      * @param amount It is the entered amount recieved in cash for payment.
      */
-    public void enterPayment(double amount){
+    public String enterPayment(double amount){
         if(amount < sale.getRunningTotal().getTotalPrice()){
-            System.out.println("Payment entered not enough to complete sale." +
-                                    " Enter new sum.");
-            return;
+            return "Payment entered not enough to complete sale." + " Enter new sum.";
         }
         TransactionDTO transactionDTO;
         sale.enteredPayment(amount);
+        sale.addSaleObserver(saleObservers);
         cashRegister.addPayment(sale.gPayment());
         transactionDTO = sale.printReciept(printer, cashRegister);
+        
         creator.updateAllSystems(transactionDTO);
+        return "Change: " + String.valueOf(transactionDTO.getPayment().getChange());
+    }
+    
+    public void addSaleObserver(SaleObserver saleObserver){
+        saleObservers.add(saleObserver);
     }
     /**
      * This method creates a SaleInfo to display total to pay when

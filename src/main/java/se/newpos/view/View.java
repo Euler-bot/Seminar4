@@ -18,6 +18,8 @@ public class View {
      */
     public View(Controller controller){
         this.controller = controller;
+        controller.addSaleObserver(new TotalRevenueView());
+        controller.addSaleObserver(new TotalRevenueFileOutput());
     }
     /**
      * Runs two fakeSale with hardcoded items and discounts.
@@ -25,6 +27,7 @@ public class View {
      */
     public void fakeSale() {
         CurrentItemDTO currentItemToDisplay = null;
+        String change;
         controller.startNewSale();
         System.out.println("New sale have been initated. \n");
         ItemDTO enteredItem = new ItemDTO(1267);
@@ -72,13 +75,13 @@ public class View {
         //Normal case I would not assume this and the display would just display that the item was not found
         //and therefor you can't add by amount, but if no exception then it would be possible to add shown by display
         if(currentItemToDisplay != null){
-            currentItemToDisplay = controller.addCurrentItemByAmount(currentItemToDisplay, 4);
+            controller.addCurrentItemByAmount(currentItemToDisplay, 4);
             System.out.println("Added 4 more of " + currentItemToDisplay.getCurrentItemName()   +" to sale\n");
         }
         try {
             controller.enterItem(new ItemDTO(0));
         } catch (ServerDownException e) {
-            System.out.println(e.getMessage() + " Try again, if not connected within 2 min call support.");
+            System.out.println("[VIEW] " + e.getMessage() + " Try again, if not connected within 2 min call support.");
         }
         catch (ItemNotFoundException e) {
         }
@@ -89,11 +92,50 @@ public class View {
         System.out.println("Runningtotal after discount was added:");
         runningTotal = controller.endSales();
         runningTotal.printRunningTotal();
-        controller.enterPayment(100);
-        controller.enterPayment(200);
+        change = controller.enterPayment(100);
+        System.out.println(change);
+        change = controller.enterPayment(200);
+        System.out.println(change);
         System.out.println("A sale have been completed. \n");
-        
 
+        controller.startNewSale();
+        System.out.println("Second sale have been initated. \n");
+        enteredItem = new ItemDTO(3213);
+        try {
+            currentItemToDisplay = controller.enterItem(enteredItem);
+            System.out.println(currentItemToDisplay.getCurrentItemName() + " has been added to sale");
+            
+        } catch (ItemNotFoundException e) {
+            System.out.println("[View] Item not found!");
+        }
+        catch (ServerDownException e) {
+            System.out.println("Server down, try again");
+        }
+        enteredItem = new ItemDTO(3219);
+        try {
+            currentItemToDisplay = controller.enterItem(enteredItem);
+            System.out.println(currentItemToDisplay.getCurrentItemName() + " has been added to sale");
+        } catch (ItemNotFoundException e) {
+            System.out.println("[View] Item not found!");
+        }
+        catch (ServerDownException e) {
+            System.out.println("Server down, try again");
+        }
+        enteredItem = new ItemDTO(5643);
+        try {
+            currentItemToDisplay = controller.enterItem(enteredItem);
+            System.out.println(currentItemToDisplay.getCurrentItemName() + " has been added to sale");
+        } catch (ItemNotFoundException e) {
+            System.out.println("[View] Item not found!");
+        }
+        catch (ServerDownException e) {
+            System.out.println("Server down, try again");
+        }
+        runningTotal = controller.endSales();
+        System.out.println("RunningTotal:");
+        runningTotal.printRunningTotal();
+        change = controller.enterPayment(200);
+        System.out.println("A second sale have been completed. \n");
     }
 
 }

@@ -15,6 +15,9 @@ public class Sale {
     private List<Item> items;
     private DiscountInfo totalDiscounts;
     private Payment paid;
+    private List<SaleObserver> saleObservers = new ArrayList<>();
+
+
     /**
     * Creates a new instance of Sale and saves the runningtotal for easy display, and timeperiod.
     */
@@ -46,6 +49,7 @@ public class Sale {
         updateRunningTotal(enteredItemDTO);
         return new CurrentItemDTO(currentItem, this.runningTotal);
     }
+
     /**
      * Increases the quantity of the specified item that already exist in sale.
      * @param enteredItemDTO The identified item.
@@ -213,6 +217,7 @@ public class Sale {
     public void enteredPayment(double amount){
         this.paid.addAmount(amount);
         this.paid.calculateChange(this);
+        notifyObservers();
     }
     /**
      * Getter method for discountinformation.
@@ -232,6 +237,7 @@ public class Sale {
         transactionDTO = new TransactionDTO(new Transaction(this, this.paid , cashRegister ));
         Reciept reciept = new Reciept(transactionDTO);
         printer.printReciept(reciept);
+        notifyObservers();
         return transactionDTO;
     }
     /**
@@ -240,6 +246,14 @@ public class Sale {
      */
     public Payment gPayment(){
         return paid;
+    }
+    private void notifyObservers(){
+        for(SaleObserver observer: saleObservers){
+            observer.updateTotal(this.runningTotal);
+        }
+    }
+    public void addSaleObserver(List<SaleObserver> observers){
+        saleObservers.addAll(observers);
     }
 
 }

@@ -1,7 +1,8 @@
 package se.newpos.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
 
@@ -9,13 +10,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import se.newpos.model.CashRegister;
-import se.newpos.model.CurrentItemDTO;
 import se.newpos.model.Item;
 import se.newpos.model.ItemDTO;
-import se.newpos.model.Sale;
-import se.newpos.model.Transaction;
-import se.newpos.model.TransactionDTO;
 
 
 public class InventorySystemTest {
@@ -35,19 +31,28 @@ public class InventorySystemTest {
 	public void testFindItemWithIDIdentifier() {
 		
 		ItemDTO enteredItem = new ItemDTO(2098);
-
-		ItemDTO actualValue = inventorySystem.findItemWithIDIdentifier(enteredItem);
-		assertEquals("Mjölk", actualValue.getName(), "Didnt return the right item.");
+		try {
+			ItemDTO actualValue = inventorySystem.findItemWithIDIdentifier(enteredItem);
+			assertEquals("Mjölk", actualValue.getName(), "Didnt return the right item.");
+		} catch (ItemNotFoundException | ServerDownException e) {
+			fail("Exception was thrown on a valid item: " + e.getMessage());
+		}
+		
 
 	}
 	@Test
 	public void testNotFindItemWithIDIdentifier() {
 		
-		ItemDTO enteredItem = new ItemDTO(126);
+		ItemDTO enteredItemDTO = new ItemDTO(126);
 
-		ItemDTO actualValue = inventorySystem.findItemWithIDIdentifier(enteredItem);
-		assertNull(actualValue, "Didnt return null.");
+		try {
+			inventorySystem.findItemWithIDIdentifier(enteredItemDTO);
+			fail("Found an item that it should not have done.");
+		} catch (ItemNotFoundException | ServerDownException e) {
+			assertTrue(e.getMessage().contains(String.valueOf(enteredItemDTO.getItemID())), "Wrong exception message, does not contain entered item: " +
+			e.getMessage());
 
+		}
 	}
 
 	@Test
@@ -87,46 +92,5 @@ public class InventorySystemTest {
                             25.00, 0.12, 15)));
 		ArrayList<ItemDTO> actualValue = inventorySystem.getItems();
 		assertEquals(expected.size(), actualValue.size(), "List of items not collected properly, different size");
-	}
-	@Test
-	public void testUpdateStorage() {
-		Sale sale = new Sale();
-		ItemDTO addItemInSale = inventorySystem.findItemWithIDIdentifier(new ItemDTO(1267));
-		CurrentItemDTO currentItem = sale.addEnteredItem(addItemInSale);
-		sale.addCurrentItem(currentItem, 5);
-		addItemInSale = inventorySystem.findItemWithIDIdentifier(new ItemDTO(2098));
-		currentItem = sale.addEnteredItem(addItemInSale);
-		sale.addCurrentItem(currentItem, 10);
-		sale.enteredPayment(1500);
-		TransactionDTO transactionDTO = new TransactionDTO(new Transaction(sale, sale.gPayment(), new CashRegister()));
-		inventorySystem.updateStorage(transactionDTO);
-		
-		int expected = 44;
-		int actual = inventorySystem.items.get(0).getQuantity();
-		assertEquals(expected, actual, "Update not as expected.");
-		expected = 189;
-		actual = inventorySystem.items.get(1).getQuantity();
-		assertEquals(expected, actual, "Update not as expected.");
-	}
-	@Test
-	public void testUpdateStorageFail() {
-		Sale sale = new Sale();
-		Item addItemInSale = new Item(12, "Bröd", "Pågen Limpa", 27.50, 0.12, 1);
-		ItemDTO itemToAdd = new ItemDTO(addItemInSale);
-		CurrentItemDTO currentItem = sale.addEnteredItem(itemToAdd);
-		sale.addCurrentItem(currentItem, 5);
-		sale.enteredPayment(1500);
-		TransactionDTO transactionDTO = new TransactionDTO(new Transaction(sale, sale.gPayment(), new CashRegister()));
-		int expected = 0;
-		for(Item item : inventorySystem.items){
-			expected += item.getQuantity();
-		}
-		int actual = 0;
-		inventorySystem.updateStorage(transactionDTO);
-		for(Item item : inventorySystem.items){
-			actual += item.getQuantity();
-		}
-		assertEquals(expected, actual, "Inventorylist has been changed");
-	
 	}
 }

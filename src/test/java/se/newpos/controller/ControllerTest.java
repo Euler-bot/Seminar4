@@ -1,18 +1,14 @@
 package se.newpos.controller;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import se.newpos.integration.ExternalCreator;
-import se.newpos.integration.InventorySystem;
+import se.newpos.integration.ItemNotFoundException;
 import se.newpos.integration.Printer;
+import se.newpos.integration.ServerDownException;
 import se.newpos.model.CurrentItemDTO;
 import se.newpos.model.ItemDTO;
 
@@ -36,34 +32,68 @@ public class ControllerTest {
 		controller.startNewSale();
 		ItemDTO enteredItemDTO = new ItemDTO(1267);
 
-		CurrentItemDTO actualItem = controller.enterItem(enteredItemDTO);
-		assertEquals("Basturöktskinka", actualItem.getCurrentItemName(),  "EnteredItem is not correct"); 
+		CurrentItemDTO actualItem;
+		try {
+			actualItem = controller.enterItem(enteredItemDTO);
+			assertEquals("Basturöktskinka", actualItem.getCurrentItemName(),  "EnteredItem is not correct");
+		} catch (ItemNotFoundException | ServerDownException e) {
+			fail("An exception was thrown on a valid item: " + e.getMessage());
+		} 
+		 
 	}
 	@Test
 	public void testEnterItemFail() {
-
 		controller.startNewSale();
 		ItemDTO enteredItemDTO = new ItemDTO(126);
-
-		CurrentItemDTO actualItem = controller.enterItem(enteredItemDTO);
-		assertNull(actualItem, "Expected null but was not null."); 
+		try {
+			
+			controller.enterItem(enteredItemDTO);
+			fail("Found an item that it should not have done.");
+		}catch (ItemNotFoundException | ServerDownException e) {
+			assertTrue(e.getMessage().contains(String.valueOf(enteredItemDTO.getItemID())), "Wrong exception message, does not contain entered item: " +
+			e.getMessage());
+		}		 
+	}
+	@Test
+	public void testServerException() {
+		controller.startNewSale();
+		ItemDTO enteredItemDTO = new ItemDTO(0);
+		try {
+			controller.enterItem(enteredItemDTO);
+			fail("No exception was made.");
+		}catch (ServerDownException | ItemNotFoundException e) {
+			assertTrue(e.getMessage().contains("server"), "Wrong exception message was made: " +
+			e.getMessage());
+		}
+		 
 	}
 	@Test
 	public void testAddCurrentItemByNegativeAmount() {
 		controller.startNewSale();
-		CurrentItemDTO expectedItem = controller.enterItem(new ItemDTO(1267));
-		int amount = -2;
-		CurrentItemDTO resultedItem = controller.addCurrentItemByAmount(expectedItem, amount);
-		assertEquals(1, resultedItem.getCurrentItemQuantity(), "Expected amount of items not correct");
+		CurrentItemDTO expectedItem;
+		try {
+			expectedItem = controller.enterItem(new ItemDTO(1267));
+			int amount = -2;
+			CurrentItemDTO resultedItem = controller.addCurrentItemByAmount(expectedItem, amount);
+			assertEquals(1, resultedItem.getCurrentItemQuantity(), "Expected amount of items not correct");	
+		} catch (ItemNotFoundException | ServerDownException e) {
+			fail("An valid item caused an exception: " + e.getMessage());
+		}
+		
 	}
 	@Test
 	public void testAddCurrentItemByAmount() {
 		controller.startNewSale();
-		CurrentItemDTO expectedItem = controller.enterItem(new ItemDTO(1267));
-		int amount = 2;
-		CurrentItemDTO resultedItem = controller.addCurrentItemByAmount(expectedItem, amount);
+		CurrentItemDTO expectedItem;
+		try {
+			expectedItem = controller.enterItem(new ItemDTO(1267));
+			int amount = 2;
+			CurrentItemDTO resultedItem = controller.addCurrentItemByAmount(expectedItem, amount);
+			assertEquals(3, resultedItem.getCurrentItemQuantity(), "Expected amount of items not correct");
+		} catch (ItemNotFoundException | ServerDownException e) {
+			fail("An valid item caused an exception: " + e.getMessage());
+		}
 		
-		assertEquals(3, resultedItem.getCurrentItemQuantity(), "Expected amount of items not correct");
 	}
 	@Test
 	public void testAddDiscountNoMember() {
@@ -71,12 +101,16 @@ public class ControllerTest {
 		controller.startNewSale();
 		double actual;
 		ItemDTO enteredItemDTO = new ItemDTO(2098);
-		controller.enterItem(enteredItemDTO);
-		String socialNumber = "198610070195";
-		controller.addDiscount(socialNumber);
-		actual = controller.getSale().getDiscountAmount();
-		double expected = 0;
-		assertEquals(expected, actual, "Discount applied even when not member");
+		try {
+			controller.enterItem(enteredItemDTO);
+			String socialNumber = "199610180195";
+			controller.addDiscount(socialNumber);
+			actual = controller.getSale().getDiscountAmount();
+			double expected = 0;
+			assertEquals(expected, actual, "Discount applied even when not member");
+		} catch (ItemNotFoundException | ServerDownException e) {
+			fail("An valid item caused an exception: " + e.getMessage());
+		}
 	}
 
 	@Test
@@ -85,45 +119,14 @@ public class ControllerTest {
 		controller.startNewSale();
 		double actual;
 		ItemDTO enteredItemDTO = new ItemDTO(2098);
-		controller.enterItem(enteredItemDTO);
-		String socialNumber = "198610070198";
-		controller.addDiscount(socialNumber);
-		actual = controller.getSale().getDiscountAmount();
-		assertNotEquals(0, actual, "Discount not applied correctly");
-	}
-
-	@Test
-	public void testEnterPaymentEnough() {
-		
-		controller.startNewSale();
-		ItemDTO enteredItemDTO = new ItemDTO(1267);
-		controller.enterItem(enteredItemDTO);
-		double expectedAmount = 500;
-		controller.enterPayment(expectedAmount);
-		assertEquals(expectedAmount, controller.getSale().gPayment().getAmount(), 
-						"Payment not applied as argument");
-	}
-	@Test
-	public void testEnterPaymentNotEnough() {
-		
-		controller.startNewSale();
-		ItemDTO enteredItemDTO = new ItemDTO(1267);
-		CurrentItemDTO  currentItemDTO = controller.enterItem(enteredItemDTO);
-		controller.addCurrentItemByAmount(currentItemDTO, 10);
-		controller.enterPayment(100);
-		assertEquals(0, controller.getSale().gPayment().getAmount(), 
-						"Program added payment even tho payment not enough");
-
-	}
-	
-	@Test
-	public void testEndSales() {
-		controller.startNewSale();
-		ExternalCreator ext = new ExternalCreator();
-		InventorySystem inv = ext.getInventorySystem();
-		CurrentItemDTO actualPrice = controller.enterItem(new ItemDTO(1267));
-		ItemDTO expectedPrice = inv.findItemWithIDIdentifier(new ItemDTO(1267));
-		assertEquals(actualPrice.getRunningTotalPrice(), (expectedPrice.getPrice() * (1 + expectedPrice.getVatRate())), "Not same totalPrice at Endsale");
-
+		try {
+			controller.enterItem(enteredItemDTO);
+			String socialNumber = "199610180192";
+			controller.addDiscount(socialNumber);
+			actual = controller.getSale().getDiscountAmount();
+			assertNotEquals(0, actual, "Discount not applied correctly");
+		} catch (ItemNotFoundException | ServerDownException e) {
+			fail("An valid item caused an exception: " + e.getMessage());
+		}
 	}
 }

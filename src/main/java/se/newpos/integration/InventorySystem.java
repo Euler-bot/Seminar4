@@ -20,6 +20,7 @@ public class InventorySystem {
      * @param enteredItem This is the entered item with a identifier to be matched.
      * @return a complete ItemDTO to controller so it can add it to sale.
      * @throws ItemNotFoundException when an item is not found in the inventory.
+     * @throws ServerDownException When server is not connected.
      */
     public ItemDTO findItemWithIDIdentifier (ItemDTO enteredItem)throws ItemNotFoundException, ServerDownException{
         if(enteredItem.getItemID() == 0){

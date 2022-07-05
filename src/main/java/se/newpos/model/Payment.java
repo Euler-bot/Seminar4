@@ -5,6 +5,7 @@ package se.newpos.model;
 public class Payment {
     private double amount;
     private double change;
+    
     /**
      * creates an instance of payment
      */
@@ -12,6 +13,7 @@ public class Payment {
         this.amount = 0;
         this.change = 0;
     }
+
     /**
      * another contructor but here you chose your amount directly
      * @param amount to be added in payment

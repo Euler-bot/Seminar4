@@ -16,6 +16,7 @@ public class RunningTotal {
         this.totalPrice = 0;
         this.totalNumberOfItems = 0;
     }
+
     /**
      * Adds the specified amount to this current runningTotal from the current sale.
      * @param amount this is specified from the item that adds in sale.

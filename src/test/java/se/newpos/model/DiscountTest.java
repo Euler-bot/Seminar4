@@ -17,7 +17,7 @@ public class DiscountTest {
 
 	@Test
 	public void testSearchSocialNumber() {
-		String socialNumber = "198610070198";
+		String socialNumber = "199610180192";
 
 		boolean actualValue = discount.searchSocialNumber(socialNumber);
 		assertTrue(actualValue, "Socialnumber not found, so discount not applied correctly");
