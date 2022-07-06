@@ -217,7 +217,7 @@ public class Sale {
     public void enteredPayment(double amount){
         this.paid.addAmount(amount);
         this.paid.calculateChange(this);
-        notifyObservers();
+        
     }
     /**
      * Getter method for discountinformation.
