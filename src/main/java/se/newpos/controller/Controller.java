@@ -127,7 +127,7 @@ public class Controller {
         transactionDTO = sale.printReciept(printer, cashRegister);
         
         creator.updateAllSystems(transactionDTO);
-        return "Change: " + String.valueOf(transactionDTO.getPayment().getChange());
+        return "Change: " + transactionDTO.getPayment().getChange();
     }
     
     public void addSaleObserver(SaleObserver saleObserver){
